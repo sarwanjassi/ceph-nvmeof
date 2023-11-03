@@ -28,7 +28,9 @@ The [creation and management of RBD images](https://docs.ceph.com/en/latest/rbd/
 To install these dependencies in Fedora:
 
 ```bash
-sudo dnf install -y make moby-engine docker-compose
+sudo dnf install -y make moby-engine docker-compose --allowerasing
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin --skip-broken
+systemctl restart docker
 ```
 
 Some [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/) are required to use `docker` with regular users:
@@ -60,6 +62,12 @@ To launch a containerized environment with a Ceph cluster and a NVMe-oF gateway 
 
     ```bash
     make pull
+
+    #pull will give some warning so you need to execute following:
+
+DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose  build  spdk bdevperf nvmeof nvmeof-devel nvmeof-cli discovery ceph
+
+    
     ```
 
 1. Deploy the containers locally:
